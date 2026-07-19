@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "modularredstonecircuits:item/redstone_wire_cell"
+  }
+}

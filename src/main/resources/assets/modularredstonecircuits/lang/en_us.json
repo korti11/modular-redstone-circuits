@@ -2,6 +2,10 @@
   "itemGroup.modularredstonecircuits": "Modular Redstone Circuits",
   "block.modularredstonecircuits.circuit_plate": "Circuit Plate",
   "item.modularredstonecircuits.circuit_plate": "Circuit Plate",
+  "item.modularredstonecircuits.redstone_wire_cell": "Redstone Wire",
+  "item.modularredstonecircuits.redstone_torch_cell": "Redstone Torch Cell",
+  "item.modularredstonecircuits.repeater_cell": "Repeater Cell",
+  "item.modularredstonecircuits.comparator_cell": "Comparator Cell",
   "modularredstonecircuits.configuration.title": "Modular Redstone Circuits Configs",
   "modularredstonecircuits.configuration.section.modularredstonecircuits.common.toml": "Modular Redstone Circuits Configs",
   "modularredstonecircuits.configuration.section.modularredstonecircuits.common.toml.title": "Modular Redstone Circuits Configs"

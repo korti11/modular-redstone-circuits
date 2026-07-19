@@ -2,6 +2,7 @@ package io.korti.mrc.datagen;
 
 import io.korti.mrc.ModularRedstoneCircuits;
 import io.korti.mrc.block.ModBlocks;
+import io.korti.mrc.item.ModItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -31,5 +32,10 @@ public class ModModelProvider extends ModelProvider {
         blockModels.blockStateOutput.accept(
                 MultiVariantGenerator.dispatch(ModBlocks.CIRCUIT_PLATE.get(),
                         BlockModelGenerators.plainVariant(modelId)));
+
+        itemModels.generateFlatItem(ModItems.REDSTONE_WIRE_CELL.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.REDSTONE_TORCH_CELL.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.REPEATER_CELL.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(ModItems.COMPARATOR_CELL.get(), ModelTemplates.FLAT_ITEM);
     }
 }
