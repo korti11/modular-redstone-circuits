@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "modularredstonecircuits:block/circuit_plate"
+  }
+}
