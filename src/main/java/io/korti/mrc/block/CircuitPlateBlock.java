@@ -1,14 +1,17 @@
 package io.korti.mrc.block;
 
+import io.korti.mrc.blockentity.CircuitPlateBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CircuitPlateBlock extends Block {
+public class CircuitPlateBlock extends Block implements EntityBlock {
 
     private static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 8, 16);
 
@@ -19,5 +22,10 @@ public class CircuitPlateBlock extends Block {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CircuitPlateBlockEntity(pos, state);
     }
 }
