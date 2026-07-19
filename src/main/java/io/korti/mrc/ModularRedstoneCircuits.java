@@ -1,10 +1,12 @@
 package io.korti.mrc;
 
 import com.mojang.logging.LogUtils;
+import io.korti.mrc.attachment.ModAttachments;
 import io.korti.mrc.block.ModBlocks;
 import io.korti.mrc.blockentity.ModBlockEntities;
 import io.korti.mrc.creativetab.ModCreativeTabs;
 import io.korti.mrc.item.ModItems;
+import io.korti.mrc.network.ModPayloads;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -21,6 +23,8 @@ public class ModularRedstoneCircuits {
         ModItems.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
+        ModAttachments.register(modEventBus);
+        ModPayloads.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

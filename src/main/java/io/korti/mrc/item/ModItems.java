@@ -4,6 +4,8 @@ import io.korti.mrc.ModularRedstoneCircuits;
 import io.korti.mrc.block.ModBlocks;
 import io.korti.mrc.circuit.ComponentType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -37,6 +39,16 @@ public class ModItems {
 
     public static void addToCreativeTab(BuildCreativeModeTabContentsEvent event) {
         ITEMS.getEntries().forEach(item -> event.accept(item.get()));
+    }
+
+    public static Item getItemForType(ComponentType type) {
+        return switch (type) {
+            case DUST -> REDSTONE_WIRE_CELL.get();
+            case TORCH -> REDSTONE_TORCH_CELL.get();
+            case REPEATER -> REPEATER_CELL.get();
+            case COMPARATOR -> COMPARATOR_CELL.get();
+            default -> Items.AIR;
+        };
     }
 
     public static void register(IEventBus modEventBus) {
