@@ -1,0 +1,88 @@
+name: Bug Report
+description: Report a bug or unexpected behavior in Modular Redstone Circuits
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting, please check the [existing issues](https://github.com/korti11/modular-redstone-circuits/issues) to avoid duplicates.
+
+  - type: input
+    id: mod-version
+    attributes:
+      label: Mod Version
+      description: Which version of Modular Redstone Circuits are you using?
+      placeholder: "e.g. 1.1.1"
+    validations:
+      required: true
+
+  - type: input
+    id: mc-version
+    attributes:
+      label: Minecraft Version
+      description: Which version of Minecraft are you running?
+      placeholder: "e.g. 1.21.1"
+    validations:
+      required: true
+
+  - type: input
+    id: forge-version
+    attributes:
+      label: NeoForge / Forge Version
+      placeholder: "e.g. NeoForge 21.1.80"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Place a Circuit Plate / Circuit Block
+        2. Open the Circuit Builder Workbench
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Crash Report / Logs
+      description: Paste any relevant crash reports or log output (from `logs/latest.log`).
+      render: text
+
+  - type: textarea
+    id: other-mods
+    attributes:
+      label: Other Mods
+      description: List any other mods installed that may be relevant.
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Screenshots, videos, or any other context that may help.
