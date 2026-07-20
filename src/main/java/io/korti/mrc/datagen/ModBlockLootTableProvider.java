@@ -19,6 +19,9 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         this.dropSelf(ModBlocks.CIRCUIT_PLATE.get());
+        this.dropSelf(ModBlocks.CIRCUIT_BLOCK_MK1.get());
+        this.dropSelf(ModBlocks.CIRCUIT_BLOCK_MK2.get());
+        this.dropSelf(ModBlocks.CIRCUIT_BLOCK_MK3.get());
     }
 
     @Override

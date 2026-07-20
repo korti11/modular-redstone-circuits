@@ -1,5 +1,8 @@
 {
   "values": [
-    "modularredstonecircuits:circuit_plate"
+    "modularredstonecircuits:circuit_plate",
+    "modularredstonecircuits:circuit_block_mk1",
+    "modularredstonecircuits:circuit_block_mk2",
+    "modularredstonecircuits:circuit_block_mk3"
   ]
 }

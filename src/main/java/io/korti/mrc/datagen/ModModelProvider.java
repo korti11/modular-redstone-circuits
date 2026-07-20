@@ -33,6 +33,27 @@ public class ModModelProvider extends ModelProvider {
                 MultiVariantGenerator.dispatch(ModBlocks.CIRCUIT_PLATE.get(),
                         BlockModelGenerators.plainVariant(modelId)));
 
+        TextureMapping cubeAllStone = new TextureMapping()
+                .put(TextureSlot.ALL, TextureMapping.getBlockTexture(Blocks.STONE));
+
+        var mk1Id = ModelTemplates.CUBE_ALL.create(
+                ModBlocks.CIRCUIT_BLOCK_MK1.get(), cubeAllStone, blockModels.modelOutput);
+        blockModels.blockStateOutput.accept(
+                MultiVariantGenerator.dispatch(ModBlocks.CIRCUIT_BLOCK_MK1.get(),
+                        BlockModelGenerators.plainVariant(mk1Id)));
+
+        var mk2Id = ModelTemplates.CUBE_ALL.create(
+                ModBlocks.CIRCUIT_BLOCK_MK2.get(), cubeAllStone, blockModels.modelOutput);
+        blockModels.blockStateOutput.accept(
+                MultiVariantGenerator.dispatch(ModBlocks.CIRCUIT_BLOCK_MK2.get(),
+                        BlockModelGenerators.plainVariant(mk2Id)));
+
+        var mk3Id = ModelTemplates.CUBE_ALL.create(
+                ModBlocks.CIRCUIT_BLOCK_MK3.get(), cubeAllStone, blockModels.modelOutput);
+        blockModels.blockStateOutput.accept(
+                MultiVariantGenerator.dispatch(ModBlocks.CIRCUIT_BLOCK_MK3.get(),
+                        BlockModelGenerators.plainVariant(mk3Id)));
+
         itemModels.generateFlatItem(ModItems.REDSTONE_WIRE_CELL.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.REDSTONE_TORCH_CELL.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(ModItems.REPEATER_CELL.get(), ModelTemplates.FLAT_ITEM);

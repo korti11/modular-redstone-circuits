@@ -17,6 +17,13 @@ public class ModBlockEntities {
             BLOCK_ENTITY_TYPES.register("circuit_plate", () ->
                     new BlockEntityType<>(CircuitPlateBlockEntity::new, ModBlocks.CIRCUIT_PLATE.get()));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CircuitBlockEntity>> CIRCUIT_BLOCK =
+            BLOCK_ENTITY_TYPES.register("circuit_block", () ->
+                    new BlockEntityType<>(CircuitBlockEntity::new,
+                            ModBlocks.CIRCUIT_BLOCK_MK1.get(),
+                            ModBlocks.CIRCUIT_BLOCK_MK2.get(),
+                            ModBlocks.CIRCUIT_BLOCK_MK3.get()));
+
     public static void register(IEventBus modEventBus) {
         BLOCK_ENTITY_TYPES.register(modEventBus);
     }

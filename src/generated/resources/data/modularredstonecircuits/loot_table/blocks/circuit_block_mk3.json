@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "modularredstonecircuits:circuit_block_mk3"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "modularredstonecircuits:blocks/circuit_block_mk3"
+}

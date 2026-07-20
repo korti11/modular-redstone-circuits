@@ -21,6 +21,15 @@ public class ModItems {
     public static final DeferredItem<BlockItem> CIRCUIT_PLATE_ITEM =
             registerBlockItem(ModBlocks.CIRCUIT_PLATE);
 
+    public static final DeferredItem<BlockItem> CIRCUIT_BLOCK_MK1_ITEM =
+            registerBlockItem(ModBlocks.CIRCUIT_BLOCK_MK1);
+
+    public static final DeferredItem<BlockItem> CIRCUIT_BLOCK_MK2_ITEM =
+            registerBlockItem(ModBlocks.CIRCUIT_BLOCK_MK2);
+
+    public static final DeferredItem<BlockItem> CIRCUIT_BLOCK_MK3_ITEM =
+            registerBlockItem(ModBlocks.CIRCUIT_BLOCK_MK3);
+
     public static final DeferredItem<ComponentCellItem> REDSTONE_WIRE_CELL =
             ITEMS.registerItem("redstone_wire_cell", props -> new ComponentCellItem(ComponentType.DUST, props));
 
