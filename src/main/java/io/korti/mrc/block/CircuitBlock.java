@@ -8,6 +8,7 @@ import io.korti.mrc.circuit.ComponentType;
 import io.korti.mrc.item.ComponentCellItem;
 import io.korti.mrc.item.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -140,6 +141,13 @@ public class CircuitBlock extends Block implements EntityBlock {
         Vec3 loc = hit.getLocation();
         double fx = ((loc.x - pos.getX()) % 1.0 + 1.0) % 1.0;
         double fz = ((loc.z - pos.getZ()) % 1.0 + 1.0) % 1.0;
+        // Hitting the +X or +Z face puts the location exactly at the block boundary,
+        // which wraps to 0.0 after % 1.0 and maps to the opposite face. Clamp to max.
+        if (hit.getDirection() == Direction.EAST) {
+            fx = 1.0 - 1e-9;
+        } else if (hit.getDirection() == Direction.SOUTH) {
+            fz = 1.0 - 1e-9;
+        }
         return new int[]{
             Mth.clamp((int)(fx * gridSize), 0, gridSize - 1),
             Mth.clamp((int)(fz * gridSize), 0, gridSize - 1)

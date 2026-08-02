@@ -1,6 +1,7 @@
 package io.korti.mrc;
 
 import io.korti.mrc.blockentity.ModBlockEntities;
+import io.korti.mrc.client.renderer.blockentity.CircuitBlockRenderer;
 import io.korti.mrc.client.renderer.blockentity.CircuitPlateRenderer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -19,5 +20,6 @@ public class ModularRedstoneCircuitsClient {
 
     private static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.CIRCUIT_PLATE.get(), CircuitPlateRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.CIRCUIT_BLOCK.get(), CircuitBlockRenderer::new);
     }
 }
