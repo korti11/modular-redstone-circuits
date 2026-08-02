@@ -56,6 +56,7 @@ public class ModItems {
             case TORCH -> REDSTONE_TORCH_CELL.get();
             case REPEATER -> REPEATER_CELL.get();
             case COMPARATOR -> COMPARATOR_CELL.get();
+            case CIRCUIT_PLATE -> CIRCUIT_PLATE_ITEM.get();
             default -> Items.AIR;
         };
     }

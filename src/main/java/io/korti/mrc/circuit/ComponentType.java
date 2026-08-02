@@ -10,6 +10,7 @@ public enum ComponentType {
     TORCH(2),
     REPEATER(3),
     COMPARATOR(4),
+    CIRCUIT_PLATE(5),
     ;
 
     // Never reuse an id; always add new values at the end with the next available number.

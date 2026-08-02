@@ -17,6 +17,18 @@ public class ModAttachments {
             ATTACHMENT_TYPES.register("selected_layer",
                     () -> AttachmentType.builder(() -> 0).build());
 
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SELECTED_BLOCK_LAYER_MK1 =
+            ATTACHMENT_TYPES.register("selected_block_layer_mk1",
+                    () -> AttachmentType.builder(() -> 0).build());
+
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SELECTED_BLOCK_LAYER_MK2 =
+            ATTACHMENT_TYPES.register("selected_block_layer_mk2",
+                    () -> AttachmentType.builder(() -> 0).build());
+
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<Integer>> SELECTED_BLOCK_LAYER_MK3 =
+            ATTACHMENT_TYPES.register("selected_block_layer_mk3",
+                    () -> AttachmentType.builder(() -> 0).build());
+
     public static void register(IEventBus modEventBus) {
         ATTACHMENT_TYPES.register(modEventBus);
     }
