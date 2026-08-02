@@ -3,6 +3,7 @@ package io.korti.mrc.block;
 import io.korti.mrc.attachment.ModAttachments;
 import io.korti.mrc.blockentity.CircuitBlockEntity;
 import io.korti.mrc.circuit.CircuitCell;
+import io.korti.mrc.circuit.CircuitData;
 import io.korti.mrc.circuit.CircuitTier;
 import io.korti.mrc.circuit.ComponentType;
 import io.korti.mrc.item.ComponentCellItem;
@@ -29,6 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -88,6 +90,26 @@ public class CircuitBlock extends Block implements EntityBlock {
             return InteractionResult.SUCCESS;
         }
 
+        if (stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof CircuitBlock nestedBlock) {
+            CircuitTier nestedTier = nestedBlock.getTier();
+            if (nestedTier.level() >= tier.level()) {
+                return InteractionResult.FAIL;
+            }
+            if (!level.isClientSide()) {
+                int layer = getSelectedLayer(player, tier);
+                if (level.getBlockEntity(pos) instanceof CircuitBlockEntity be) {
+                    if (be.getCell(cell[0], layer, cell[1]).type() != ComponentType.EMPTY) {
+                        return InteractionResult.FAIL;
+                    }
+                    CompoundTag nbt = new CircuitData(nestedTier.level(), "", List.of(), List.of()).toNbt();
+                    be.setCell(cell[0], layer, cell[1],
+                            new CircuitCell(ComponentType.NESTED_CIRCUIT, player.getDirection(), nbt));
+                    stack.consume(1, player);
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
@@ -117,7 +139,12 @@ public class CircuitBlock extends Block implements EntityBlock {
         if (current.type() == ComponentType.EMPTY) return;
 
         if (!player.getAbilities().instabuild) {
-            Item item = ModItems.getItemForType(current.type());
+            Item item;
+            if (current.type() == ComponentType.NESTED_CIRCUIT) {
+                item = itemForCircuitTier(CircuitData.fromNbt(current.nestedCircuitNbt()).tier());
+            } else {
+                item = ModItems.getItemForType(current.type());
+            }
             if (item != Items.AIR) {
                 ItemStack returnStack = new ItemStack(item);
                 if (!player.getInventory().add(returnStack)) {
@@ -127,6 +154,15 @@ public class CircuitBlock extends Block implements EntityBlock {
         }
 
         be.setCell(cell[0], layer, cell[1], CircuitCell.empty());
+    }
+
+    private static Item itemForCircuitTier(int tierLevel) {
+        return switch (tierLevel) {
+            case 1 -> ModItems.CIRCUIT_BLOCK_MK1_ITEM.get();
+            case 2 -> ModItems.CIRCUIT_BLOCK_MK2_ITEM.get();
+            case 3 -> ModItems.CIRCUIT_BLOCK_MK3_ITEM.get();
+            default -> Items.AIR;
+        };
     }
 
     private static int getSelectedLayer(Player player, CircuitTier tier) {

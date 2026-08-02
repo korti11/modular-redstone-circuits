@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import io.korti.mrc.blockentity.CircuitBlockEntity;
 import io.korti.mrc.circuit.CircuitCell;
+import io.korti.mrc.circuit.CircuitData;
 import io.korti.mrc.circuit.ComponentType;
 import io.korti.mrc.circuit.FaceMode;
 import io.korti.mrc.item.ModItems;
@@ -93,7 +94,13 @@ public class CircuitBlockRenderer implements BlockEntityRenderer<CircuitBlockEnt
             target[i][j] = null;
             return;
         }
-        Item item = ModItems.getItemForType(cell.type());
+        Item item;
+        if (cell.type() == ComponentType.NESTED_CIRCUIT) {
+            int tierLevel = CircuitData.fromNbt(cell.nestedCircuitNbt()).tier();
+            item = itemForCircuitTier(tierLevel);
+        } else {
+            item = ModItems.getItemForType(cell.type());
+        }
         if (item == Items.AIR) {
             target[i][j] = null;
             return;
@@ -102,6 +109,15 @@ public class CircuitBlockRenderer implements BlockEntityRenderer<CircuitBlockEnt
         itemModelResolver.updateForTopItem(irs, new ItemStack(item),
                 ItemDisplayContext.FIXED, null, null, seed);
         target[i][j] = irs;
+    }
+
+    private static Item itemForCircuitTier(int tierLevel) {
+        return switch (tierLevel) {
+            case 1 -> ModItems.CIRCUIT_BLOCK_MK1_ITEM.get();
+            case 2 -> ModItems.CIRCUIT_BLOCK_MK2_ITEM.get();
+            case 3 -> ModItems.CIRCUIT_BLOCK_MK3_ITEM.get();
+            default -> Items.AIR;
+        };
     }
 
     @Override

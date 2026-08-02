@@ -11,6 +11,10 @@ public enum ComponentType {
     REPEATER(3),
     COMPARATOR(4),
     CIRCUIT_PLATE(5),
+    BUNDLED_CABLE(6),
+    SPLITTER(7),
+    MERGER(8),
+    NESTED_CIRCUIT(9),
     ;
 
     // Never reuse an id; always add new values at the end with the next available number.

@@ -3,6 +3,7 @@ package io.korti.mrc.blockentity;
 import com.mojang.serialization.Codec;
 import io.korti.mrc.block.CircuitBlock;
 import io.korti.mrc.circuit.CircuitCell;
+import io.korti.mrc.circuit.CircuitData;
 import io.korti.mrc.circuit.CircuitTier;
 import io.korti.mrc.circuit.ComponentType;
 import io.korti.mrc.circuit.FaceMode;
@@ -82,14 +83,14 @@ public class CircuitBlockEntity extends BlockEntity {
     /**
      * NBT layout:
      *
-     * "types"   : List<Integer> (size³) — ComponentType.id per cell
-     *                                     flat index: x*size²+y*size+z
-     * "facings" : List<Integer> (size³) — direction id per cell (NORTH=0,SOUTH=1,EAST=2,WEST=3)
-     *                                     flat index: x*size²+y*size+z
-     * "faces"   : List<Integer> (6)     — FaceMode.id per face, indexed by Direction.ordinal()
+     * "types"          : List<Integer> (size³) — ComponentType.id per cell, flat index x*size²+y*size+z
+     * "facings"        : List<Integer> (size³) — direction id per cell (NORTH=0,SOUTH=1,EAST=2,WEST=3)
+     * "faces"          : List<Integer> (6)     — FaceMode.id per face, indexed by Direction.ordinal()
+     * "nestedIndices"  : List<Integer> (sparse) — flat indices of cells with a nested circuit
+     * "nestedCircuits" : List<CircuitData> (sparse, same length) — circuit data for each indexed cell
      *
      * Tier is NOT persisted — always re-derived from the live BlockState on load.
-     * nestedCircuitNbt serialization is deferred to the circuit-nesting task.
+     * nestedIndices/nestedCircuits are omitted entirely when no cell has a nested circuit.
      */
     @Override
     protected void saveAdditional(ValueOutput output) {
@@ -98,6 +99,23 @@ public class CircuitBlockEntity extends BlockEntity {
         output.store("types",   Codec.INT.listOf(), packTypes(size));
         output.store("facings", Codec.INT.listOf(), packFacings(size));
         output.store("faces",   Codec.INT.listOf(), packFaceAssignments());
+
+        List<Integer> nestedIndices = new ArrayList<>();
+        List<CircuitData> nestedData = new ArrayList<>();
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                for (int z = 0; z < size; z++) {
+                    if (grid[x][y][z].hasNestedCircuit()) {
+                        nestedIndices.add(x * size * size + y * size + z);
+                        nestedData.add(CircuitData.fromNbt(grid[x][y][z].nestedCircuitNbt()));
+                    }
+                }
+            }
+        }
+        if (!nestedIndices.isEmpty()) {
+            output.store("nestedIndices",  Codec.INT.listOf(),           nestedIndices);
+            output.store("nestedCircuits", CircuitData.CODEC.listOf(),   nestedData);
+        }
     }
 
     @Override
@@ -107,6 +125,11 @@ public class CircuitBlockEntity extends BlockEntity {
         input.read("types",   Codec.INT.listOf()).ifPresent(list -> unpackTypes(list, size));
         input.read("facings", Codec.INT.listOf()).ifPresent(list -> unpackFacings(list, size));
         input.read("faces",   Codec.INT.listOf()).ifPresent(this::unpackFaceAssignments);
+
+        // Nested circuits load after types+facings so the existing cell data is already in place.
+        input.read("nestedIndices", Codec.INT.listOf()).ifPresent(indices ->
+            input.read("nestedCircuits", CircuitData.CODEC.listOf()).ifPresent(data ->
+                unpackNestedCircuits(indices, data, size)));
     }
 
     @Override
@@ -200,6 +223,23 @@ public class CircuitBlockEntity extends BlockEntity {
         }
         for (int i = 0; i < 6; i++) {
             faceAssignments[i] = FaceMode.byId(list.get(i));
+        }
+    }
+
+    private void unpackNestedCircuits(List<Integer> indices, List<CircuitData> data, int size) {
+        int count = Math.min(indices.size(), data.size());
+        for (int i = 0; i < count; i++) {
+            int idx = indices.get(i);
+            int x = idx / (size * size);
+            int y = (idx / size) % size;
+            int z = idx % size;
+            if (x >= 0 && x < size && y >= 0 && y < size && z >= 0 && z < size) {
+                grid[x][y][z] = new CircuitCell(
+                        grid[x][y][z].type(),
+                        grid[x][y][z].facing(),
+                        data.get(i).toNbt()
+                );
+            }
         }
     }
 
